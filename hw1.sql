@@ -40,12 +40,20 @@ FROM (
 
 Output: 32
 
-/** Question 5: Find the number of emails in the database sent by Hillary Clinton. Keep in mind that there are multiple * aliases (from the previous question) that the email could’ve been sent from. **/
+/** Question 5: Find the number of emails in the database sent by Hillary Clinton.
+ **/
 
+SELECT Count(PersonId)
+FROM EmailReceivers 
+WHERE EmailId in (
+    SELECT Id FROM Emails 
+    WHERE SenderPersonId in ( 
+        SELECT Id FROM Persons P
+        WHERE P.Name = 'Hillary Clinton'
+    )
+);
 
-
-
-
+Output: 2744
 
 /** Question 6: Find the names of the 5 people who emailed Hillary Clinton the most. **/
 SELECT Name, count(E.Id) countEmail 
@@ -70,7 +78,6 @@ Sidney Blumenthal|362
 Lauren Jiloty|336
 
 /** Question 7: Find the names of the 5 people that Hillary Clinton emailed the most. **/
-
 
 SELECT Name, count(Id) countE
 
